@@ -130,18 +130,18 @@ elif choice == "Store Data":
             else:
                 st.error("All feilds are required to fill.")
                 
-# === data retieve data section === 
-elif choice =="Retieve Data":
+# === data retrieve data section === 
+elif choice =="Retrieve Data":
     if not st.session_store.authenticated_user:
         st.warning("🔓 Please login first")
     else:
-        st.subheader("🔍 Retieve data")
+        st.subheader("🔍 Retrieve data")
         user_data = stored_data.get(st.session_state.authenticated_user, {}).get("data", [])
         
         if not user_data:
             st.info("No Data Found!")
         else:
-            st.write("Encrypted Data Rnteries:")
+            st.write("Encrypted Data Enteries:")
             for i, item in enumerate(user_data):
                 st.code(item,language="text")
                 
