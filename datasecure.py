@@ -42,7 +42,7 @@ def generate_key(passkey):
     return urlsafe_b64encode(key)
 
 def hash_password(password):
-    return hashlib.pbkdf2_hmac('sha256', password.ecode(), SALT, 100000).hex()
+    return hashlib.pbkdf2_hmac('sha256', password.encode(), SALT, 100000).hex()
 
  # cryptography.fernet
 def encrypt_text(text,key):
