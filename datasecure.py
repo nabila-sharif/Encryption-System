@@ -28,9 +28,10 @@ if "lockout_time" not in st.session_state:
 # === if data is load ===
 def load_data():
     if os.path.exists(DATA_FILE):
-        with open(DATA_FILE,"r") as f:
+        with open(DATA_FILE, "r") as f:
             return json.load(f)
-        return{}
+    return {}
+
     
 def save_data(data):
     with open(DATA_FILE, "w") as f:
@@ -41,7 +42,7 @@ def generate_key(passkey):
     return urlsafe_b64encode(key)
 
 def hash_password(password):
-    return hashlib.pbkdf2_hmac('sha256', password.code(), SALT, 100000).hex()
+    return hashlib.pbkdf2_hmac('sha256', password.ecode(), SALT, 100000).hex()
 
  # cryptography.fernet
 def encrypt_text(text,key):
@@ -85,7 +86,7 @@ elif choice == "Register":
                 st.success(" ✅ User register successfully!")
         else:
             st.error("Both fields are required.")
-    elif choice == "Login":
+    elif choice == "Register": 
         st.subheader(" 🗝️ User Login")
         
         if time.time() < st.session_state.lockout_time:
@@ -98,7 +99,7 @@ elif choice == "Register":
         
         if st.button("Login"):
             if username in stored_data and stored_data[username]["password"] == hash_password(password):
-                st.seeeion_state.authenticated_user = username
+                st.session_state.authenticated_user = username
                 st.session_state.failed_attempts = 0
                 st.success(f"👋 Welcome {username}!")
             else:
@@ -132,7 +133,7 @@ elif choice == "Store Data":
                 
 # === data retrieve data section === 
 elif choice =="Retrieve Data":
-    if not st.session_store.authenticated_user:
+    if not st.session_state.authenticated_user:
         st.warning("🔓 Please login first")
     else:
         st.subheader("🔍 Retrieve data")
@@ -146,7 +147,7 @@ elif choice =="Retrieve Data":
                 st.code(item,language="text")
                 
             encrypted_input = st.text_area("Enter Encrypted Text")
-            passkey = st.text_input("Enter Passkey T Decrypt", type="password")
+            passkey = st.text_input("Enter Passkey To Decrypt", type="password")
             
             if st.button("Decrypt"):
                 result = decrypt_text(encrypted_input, passkey)
